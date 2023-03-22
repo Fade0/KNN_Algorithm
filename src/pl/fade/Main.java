@@ -83,7 +83,6 @@ public class Main {
     public static String algorithmKNN(int k, List<Node> nodeTestingList, List<Node> nodeTrainingList) {
         String result = "";
         int max = 0;
-        double goodVector = 0;
         double goodAnswer = 0;
 
         for (Node testedNode : nodeTestingList) {
@@ -118,9 +117,7 @@ public class Main {
             System.out.println("Prediciton: " + result);
             System.out.println("Answear: " + testedNode.getClassName());
             System.out.println("------------------------------------------------");
-            if (result.equals(testedNode.getClassName())){
-                goodVector++;
-            }
+
         }
 
         System.out.println("------------------------------------------------");
