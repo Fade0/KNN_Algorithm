@@ -4,10 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class Main {
 
@@ -37,6 +34,7 @@ public class Main {
         nodeTestingList = getNodeList(pathTestingFile);
 
 
+        algorithmKNN(k, nodeTestingList,nodeTrainingList);
         return;
     }
 
@@ -80,14 +78,18 @@ public class Main {
         return -1;
     }
 
-    public static String alogythmKNN(int k, List<Node> nodeTrainingList, List<Node> nodeTestingList) {
-        String result = "";
-        Double accuracy = 0.0;
 
+
+    public static String algorithmKNN(int k, List<Node> nodeTestingList, List<Node> nodeTrainingList) {
+        String result = "";
+        int max = 0;
+        double goodVector = 0;
+        double goodAnswer = 0;
 
         for (Node testedNode : nodeTestingList) {
-
             List<Distance> distanceList = new ArrayList<>();
+            List<String> stringList = new ArrayList<>();
+            Set<String> stringSet = new HashSet<>();
 
             for (Node trainedNode : nodeTrainingList) {
                 distanceList.add(new Distance(testedNode, trainedNode, getDistanceBetweenNodes(testedNode, trainedNode)));
@@ -95,11 +97,38 @@ public class Main {
 
             Collections.sort(distanceList);
 
+            for (int j = 0; j < k; j++) {
+                stringList.add(distanceList.get(j).getNodeTrain().getClassName());
+                stringSet.add(distanceList.get(j).getNodeTrain().getClassName());
+            }
+
+            for (String s : stringSet) {
+                if (Collections.frequency(stringList, s) > max) {
+                    result = s;
+                    max = Collections.frequency(stringList, s);
+                }
+            }
+            if (result.equals(testedNode.getClassName())) {
+                goodAnswer++;
+                System.out.println(goodAnswer);
+                System.out.println(result);
+            }
+
+            System.out.println("K: " + k);
+            System.out.println("Prediciton: " + result);
+            System.out.println("Answear: " + testedNode.getClassName());
+            System.out.println("------------------------------------------------");
+            if (result.equals(testedNode.getClassName())){
+                goodVector++;
+            }
         }
+
+        System.out.println("------------------------------------------------");
+        System.out.println(nodeTestingList.size());
+        System.out.println("Program accuracy: "+ (goodAnswer/nodeTestingList.size()) * 100 + "%");
+
         return result;
     }
-
-
 
 }
 
