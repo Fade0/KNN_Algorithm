@@ -14,6 +14,7 @@ public class Main {
 
         List<Node> nodeTrainingList;
         List<Node> nodeTestingList;
+        List<Node> userTestingList;
         int k = 1;
 
         String pathTrainingFile;
@@ -24,19 +25,31 @@ public class Main {
         System.out.println("Insert value for K");
         k = Integer.parseInt(br.readLine());
 
+        //Loading TrainingFile
         System.out.println("Insert path to training file");
         pathTrainingFile = br.readLine();
-
-        //System.out.println("Insert vector");
-        //setFromConsole();
-
-        System.out.println("Insert path to testing file");
-        pathTestingFile = br.readLine();
-        
         nodeTrainingList = getNodeList(pathTrainingFile);
-        nodeTestingList = getNodeList(pathTestingFile);
 
-        KNN(k, nodeTestingList, nodeTrainingList);
+        //Selecting Test option
+        String userChoice = "";
+        System.out.println("Do you want to load test data from file or insert vector it yourself [File/Vector]");
+        userChoice = br.readLine();
+        System.out.println(userChoice);
+
+        if(userChoice.trim().equals("File")){
+            //Loading TestingFile
+            System.out.println("Insert path to testing file");
+            pathTestingFile = br.readLine();
+            nodeTestingList = getNodeList(pathTestingFile);
+            KNN(k, nodeTestingList, nodeTrainingList);
+
+        } else if (userChoice.trim().equals("Vector")) {
+            //Custom vector
+            System.out.println("Insert custom vector");
+            userTestingList = setFromConsole();
+            KNN(k,userTestingList,nodeTrainingList);
+
+        }
 
     }
 
@@ -135,7 +148,7 @@ public class Main {
             System.out.println("Answer: " + answer);
             System.out.println("Vector:  " + ((correctVectors / k) * 100) + "%");
             System.out.println("Correct: " + testedNode.getClassName());
-            System.out.println("--------------------");
+            System.out.println("---------");
 
         }
 
@@ -144,29 +157,36 @@ public class Main {
     }
 
 
-    public static void setFromConsole(){
-        boolean dataIsCorrect = false;
-            String line = "";
-            System.out.println("Enter your vector 'a1,a2,a3,a4,k + name\n to exit type f");
-            Scanner scanner = new Scanner(line);
-            line = scanner.nextLine();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+    public static List<Node> setFromConsole() throws IOException {
+        List<Node> userNodeList = new ArrayList<>();
 
-            if(!line.equals("f")){
-                dataIsCorrect = false;
-                return;
-            }
+        String line = "";
+        System.out.println("Enter your vector 'a1,a2,a3,a4 + name\n");
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        line = br.readLine();
 
-            String[] tab = line.split(",");
-            Double[] attributes = new Double[tab.length - 1];
+        //System.out.println(line);
 
-            for (int i = 0; i < attributes.length-1; i++){
-                attributes[i] = Double.parseDouble(tab[i].trim());
-                System.out.println(attributes[i]);
-            }
-            return;
+        String[] tab = line.split(",");
+        Double[] attr = new Double[tab.length-2];
+        List<Double> userDouble = new ArrayList<>();
+        //System.out.println("attr leng"+ attr.length);
+        for (int i =0; i< attr.length; i++){
+            attr[i] = Double.valueOf(tab[i].trim());
+            //System.out.println(attr[i]);
+            //System.out.println("tab"+ tab.length);
         }
 
+        userDouble.add(attr[attr.length-3]);
+        userDouble.add(attr[attr.length-2]);
+        userDouble.add(attr[attr.length-1]);
+        userDouble.add(attr[0]);
+        //System.out.println("attr" + attr.length);
+        userNodeList.add(new Node(userDouble,tab[tab.length-1]));
+
+
+        return userNodeList;
+    }
 
 
 }
