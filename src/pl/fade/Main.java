@@ -27,9 +27,12 @@ public class Main {
         System.out.println("Insert path to training file");
         pathTrainingFile = br.readLine();
 
+        //System.out.println("Insert vector");
+        //setFromConsole();
+
         System.out.println("Insert path to testing file");
         pathTestingFile = br.readLine();
-
+        
         nodeTrainingList = getNodeList(pathTrainingFile);
         nodeTestingList = getNodeList(pathTestingFile);
 
@@ -104,8 +107,8 @@ public class Main {
             Collections.sort(distanceList);
 
             for (int j = 0; j < k; j++) {
-                stringList.add(distanceList.get(j).getNodeTrain().getClassName());
-                stringSet.add(distanceList.get(j).getNodeTrain().getClassName());
+                stringList.add(distanceList.get(j).getNodeTest().getClassName());
+                stringSet.add(distanceList.get(j).getNodeTest().getClassName());
 
                 if (distanceList.get(j).getNodeTrain().getClassName().equals(testedNode.getClassName())){
                     correctVectors++;
@@ -128,7 +131,7 @@ public class Main {
 
             }
 
-            //System.out.println("\nK = " + k);
+
             System.out.println("Answer: " + answer);
             System.out.println("Vector:  " + ((correctVectors / k) * 100) + "%");
             System.out.println("Correct: " + testedNode.getClassName());
@@ -139,6 +142,32 @@ public class Main {
             System.out.println("Accuracy: "+ (goodAnswer/nodeTestList.size())*100+"%");
         return answer;
     }
+
+
+    public static void setFromConsole(){
+        boolean dataIsCorrect = false;
+            String line = "";
+            System.out.println("Enter your vector 'a1,a2,a3,a4,k + name\n to exit type f");
+            Scanner scanner = new Scanner(line);
+            line = scanner.nextLine();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+
+            if(!line.equals("f")){
+                dataIsCorrect = false;
+                return;
+            }
+
+            String[] tab = line.split(",");
+            Double[] attributes = new Double[tab.length - 1];
+
+            for (int i = 0; i < attributes.length-1; i++){
+                attributes[i] = Double.parseDouble(tab[i].trim());
+                System.out.println(attributes[i]);
+            }
+            return;
+        }
+
+
 
 }
 
