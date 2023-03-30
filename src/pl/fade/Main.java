@@ -143,7 +143,7 @@ public class Main {
         return answer;
     }
 
-
+    //Not working part
     public static void setFromConsole(){
         boolean dataIsCorrect = false;
             String line = "";
